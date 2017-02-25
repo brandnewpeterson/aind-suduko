@@ -3,17 +3,17 @@
 
 # Question 1 (Naked Twins)
 Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+A: "Constraint propagation" in the context of suduko merely means that we employ reasoning about the rules of the game to eliminate possible values from each position on the gameboard. In the case of the "naked twins" strategy, we look for units (rows, columns, 3x3 boxes, and diagonals), that have two boxes with identical two-digit possible values. We can then reason that one of these boxes must have one of the values in the identical pair and the other box must have the remaining value. Thus, all other boxes in the unit will not have either of these values, and we can eliminate both values from their possible values.
 
 # Question 2 (Diagonal Sudoku)
 Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+A: Again, "constraint propagation" in the context of Suduko merely means that we employ reasoning about the rules of the game to eliminate possible values from each position on the gameboard. With diagonal suduko, we introduce an additional constraint on possible values by saying that the two diagonal lines formed by the boxes that connect the four corners of the gameboard also constitute units. This means that certain positions fall into 4 units rather than just 3 (all the boxes in its same row, column, 3x3 box, *and*, if applicable, diagonal). As these units have overlapping boxes and as each unit must have only one value in the set {1...9}, the number of possible values is further reduced.
 
 ### Install
 
 This project requires **Python 3**.
 
-We recommend students install [Anaconda](https://www.continuum.io/downloads), a pre-packaged Python distribution that contains all of the necessary libraries and software for this project. 
+We recommend students install [Anaconda](https://www.continuum.io/downloads), a pre-packaged Python distribution that contains all of the necessary libraries and software for this project.
 Please try using the environment we provided in the Anaconda lesson of the Nanodegree.
 
 ##### Optional: Pygame
