@@ -4,6 +4,19 @@ assignments = []
 rows = 'ABCDEFGHI'
 cols = '123456789'
 
+diagonal_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
+solved_diag_sudoku = {'G7': '8', 'G6': '9', 'G5': '7', 'G4': '3', 'G3': '2', 'G2': '4', 'G1': '6', 'G9': '5',
+                      'G8': '1', 'C9': '6', 'C8': '7', 'C3': '1', 'C2': '9', 'C1': '4', 'C7': '5', 'C6': '3',
+                      'C5': '2', 'C4': '8', 'E5': '9', 'E4': '1', 'F1': '1', 'F2': '2', 'F3': '9', 'F4': '6',
+                      'F5': '5', 'F6': '7', 'F7': '4', 'F8': '3', 'F9': '8', 'B4': '7', 'B5': '1', 'B6': '6',
+                      'B7': '2', 'B1': '8', 'B2': '5', 'B3': '3', 'B8': '4', 'B9': '9', 'I9': '3', 'I8': '2',
+                      'I1': '7', 'I3': '8', 'I2': '1', 'I5': '6', 'I4': '5', 'I7': '9', 'I6': '4', 'A1': '2',
+                      'A3': '7', 'A2': '6', 'E9': '7', 'A4': '9', 'A7': '3', 'A6': '5', 'A9': '1', 'A8': '8',
+                      'E7': '6', 'E6': '2', 'E1': '3', 'E3': '4', 'E2': '8', 'E8': '5', 'A5': '4', 'H8': '6',
+                      'H9': '4', 'H2': '3', 'H3': '5', 'H1': '9', 'H6': '1', 'H7': '7', 'H4': '2', 'H5': '8',
+                      'D8': '9', 'D9': '2', 'D6': '8', 'D7': '1', 'D4': '4', 'D5': '3', 'D2': '7', 'D3': '6',
+                      'D1': '5'}
+
 def assign_value(values, box, value):
     """
     Please use this function to update your values dictionary!
@@ -57,7 +70,16 @@ def display(values):
         if r in 'CF': print(line)
     return
 
+display(grid_values(diagonal_grid))
+
 def eliminate(values):
+    """
+    Eliminate any single-digit possible values from multi-digit possible values within each unit.
+    Args:
+        values(dict): The sudoku in dictionary form
+    Returns:
+        the values dictionary with the single-digit possible values revoved from the multi-digit possible values within each unit.
+    """
     # Loop over all values
     for key in values:
         if len(values[key]) == 1:
@@ -71,6 +93,13 @@ def eliminate(values):
     return values
 
 def only_choice(values):
+    """
+    Determine if only one box in a unit would allow a certain digit. If so, assign box that digit.
+    Args:
+        values(dict): The sudoku in dictionary form
+    Returns:
+        the values dictionary with the single-digit values assigned as final values.
+    """
     # Loop over all values
     for key in values:
         for unit in units[key]:
@@ -120,6 +149,13 @@ def naked_twins(values):
     return values
 
 def check_if_solved(values):
+    """Check to see if the puzzle is solved.
+    Args:
+        values(dict): a dictionary of the form {'box_name': '123456789', ...}
+
+    Returns:
+        boolean indicating whether puzzle is solved for not.
+    """
     solved = False
     vals_length = 0
     for key in values:
@@ -129,6 +165,13 @@ def check_if_solved(values):
     return solved
 
 def reduce_puzzle(values):
+    """Remove invalid possible values from gameboard by utilizing eliminate, only choice, naked twins and search strategies.
+    Args:
+        values(dict): a dictionary of the form {'box_name': '123456789', ...}
+
+    Returns:
+        the values dictionary with invalid possible values removed or a False boolean in the case that a valid interim solution cannot be found.
+    """
     stalled = False
     while not stalled:
         # Check how many boxes have a determined value
@@ -161,8 +204,13 @@ def reduce_puzzle(values):
     return values
 
 def search(values):
-    "Using depth-first search and propagation, create a search tree and solve the sudoku."
-    # First, reduce the puzzle using the previous function
+    """After reducing possible values using multiple strategies, recursively search gameboard for positions with least number of possible values and try each of those values for a possible final solution.
+    Args:
+        values(dict): a dictionary of the form {'box_name': '123456789', ...}
+
+    Returns:
+        the gameboard solution or a False boolean in the case that no solution can be found.
+    """    # First, reduce the puzzle using the previous function
     values = reduce_puzzle(values)
     # Choose one of the unfilled squares with the fewest possibilities
     # Find smallest set of possible vals
